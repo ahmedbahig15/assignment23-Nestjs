@@ -1,11 +1,14 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../../common/decorators/user.decorators';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { isPublic } from '../../common/decorators/public.decorator';
+import { Action } from '../../common/decorators/action.decorator';
+import { RBACGuard } from '../../common/guards/rbac.guard';
 
+@UsePipes(ValidationPipe)
 @UseGuards(AuthGuard)
 @Controller('auth')
 export class AuthController {
@@ -26,6 +29,8 @@ export class AuthController {
     }
 
     @Get('profile/me')
+    @UseGuards(RBACGuard)
+    @Action('get-profile')
     async getProfile(@User() user: any) {
       const customer = await this.authService.getProfile(user.sub);
       return { message: 'user get successfully', success: true, data: customer }  

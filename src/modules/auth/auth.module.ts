@@ -4,9 +4,14 @@ import { AuthController } from './auth.controller';
 import { userMongoModule } from '../../shared/modules/user-mongo.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { MailModule } from '../../shared/mail/mail.module';
+import { PermissionRepository } from '../../models/permissions/permissions.repository';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Permission, permissionsSchema } from '../../models/permissions/permissions.schema';
 
 @Module({
-  imports: [userMongoModule,
+  imports: [userMongoModule,MongooseModule.forFeature([{name:Permission.name,schema:permissionsSchema}]),
+  MailModule,
   JwtModule.registerAsync({
    inject: [ConfigService], 
   useFactory: (configService: ConfigService)=>({
@@ -16,6 +21,6 @@ import { ConfigService } from '@nestjs/config';
 })],
 
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PermissionRepository],
 })
 export class AuthModule {}
