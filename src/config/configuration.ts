@@ -23,5 +23,10 @@ export default () => ({
       user: process.env.MAILER_USER,
       pass: process.env.MAILER_PASS,
     }
+  },
+  COD_FEES: process.env.COD_FEES || 20,
+  kashier: {
+    apiKey: process.env.KASHIER_API_KEY,
+    apiSecret: process.env.KASHIER_SECRET_KEY
   }
 });

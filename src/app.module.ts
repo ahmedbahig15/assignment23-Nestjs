@@ -11,6 +11,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfigService } from './shared/cache/cache.config.service';
 import { FileUploadModule } from './shared/file-upload/file-upload.module';
+import { CategoryModule } from './modules/category/category.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { FileUploadModule } from './shared/file-upload/file-upload.module';
     BrandModule,
     ProductModule,
     FileUploadModule,
+    CategoryModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

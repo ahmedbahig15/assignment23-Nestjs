@@ -10,14 +10,20 @@ import {
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { BrandFactoryService } from './factory/brand.factory';
 
 @Controller('brand')
 export class BrandController {
-  constructor(private readonly brandService: BrandService) {}
+  constructor(
+  private readonly brandService: BrandService,
+  private readonly brandFactoryService: BrandFactoryService
+) {}
 
   @Post()
-  create(@Body() createBrandDto: CreateBrandDto) {
-    return this.brandService.create(createBrandDto);
+  async create(@Body() createBrandDto: CreateBrandDto) {
+   const brand = this.brandFactoryService.createBrand(createBrandDto);
+   const createdBrand = await this.brandService.create(brand);
+   return {message: "brand created successfully", sucess: true, data: createdBrand};
   }
 
   @Get()
